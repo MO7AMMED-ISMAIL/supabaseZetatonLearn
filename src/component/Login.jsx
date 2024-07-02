@@ -2,16 +2,24 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../redux/Slices/authSlice';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const auth = useSelector(state => state.auth);
-
+    
+    const navigate = useNavigate();
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(login({ email, password }));
+        dispatch(login({ email, password })).then((result) => {
+            if (result) {
+                navigate('/students');
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
     };
 
     return (
